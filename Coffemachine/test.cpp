@@ -1,108 +1,122 @@
 #include "pch.h"
+#include "ISourceOfIngredients.h"
+#include "MockSourceOfIngredients.h"
 #include "Coffemaker.h"
 
-const grams SizeOfAntyhing = 50;
-
-TEST(CheckWorkingOfMockingMethods, SetCupSize)
+TEST(Americano, MakeLittleCupOfAmericano)
 {
-	MockCoffemaker mock;
-	EXPECT_CALL(mock, SetCupSize(testing::_));
-	mock.SetCupSize(CupSize::Little);
-}
-
-TEST(CheckWorkingOfMockingMethods, AddWater)
-{
-	MockCoffemaker mock;
-	EXPECT_CALL(mock, AddWater(testing::_, testing::_));
-	mock.AddWater(SizeOfAntyhing, Temperature::Default);
-}
-
-TEST(CheckWorkingOfMockingMethods, AddSugar)
-{
-	MockCoffemaker mock;
-	EXPECT_CALL(mock, AddSugar(testing::_));
-	mock.AddSugar(SizeOfAntyhing);
-}
-
-TEST(CheckWorkingOfMockingMethods, AddCoffee)
-{
-	MockCoffemaker mock;
-	EXPECT_CALL(mock, AddCoffee(testing::_));
-	mock.AddCoffee(SizeOfAntyhing);
-}
-
-TEST(CheckWorkingOfMockingMethods, AddMilk)
-{
-	MockCoffemaker mock;
-	EXPECT_CALL(mock, AddMilk(testing::_));
-	mock.AddMilk(SizeOfAntyhing);
-}
-
-TEST(CheckWorkingOfMockingMethods, AddMilkFoam)
-{
-	MockCoffemaker mock;
-	EXPECT_CALL(mock, AddMilkFoam(testing::_));
-	mock.AddMilkFoam(SizeOfAntyhing);
-}
-
-TEST(CheckWorkingOfMockingMethods, AddCream)
-{
-	MockCoffemaker mock;
-	EXPECT_CALL(mock, AddCream(testing::_));
-	mock.AddCream(SizeOfAntyhing);
-}
-
-TEST(Americano, MakeAmericano)
-{
-	MockCoffemaker mock;
+	Coffemaker coffemaker;
+	MockSourceOfIngredients mock;
 	testing::InSequence seq;
-	auto cupSize = static_cast<grams>(CupSize::Little);
+	auto cupSize = static_cast<int>(CupSize::Little);
 
 	EXPECT_CALL(mock, SetCupSize(cupSize));
 	EXPECT_CALL(mock, AddWater(cupSize / 2, Temperature::Default));
 	EXPECT_CALL(mock, AddCoffee(cupSize / 3));
 
-	mock.MakeAmericano(static_cast<CupSize>(cupSize));
+	coffemaker.MakeAmericano(mock, static_cast<CupSize>(cupSize));
 }
 
-TEST(Cappucino, MakeCappucino)
+TEST(Americano, MakeBigCupOfAmericano)
 {
-	MockCoffemaker mock;
+	Coffemaker coffemaker;
+	MockSourceOfIngredients mock;
 	testing::InSequence seq;
-	auto cupSize = static_cast<grams>(CupSize::Little);
+	auto cupSize = static_cast<int>(CupSize::Big);
+
+	EXPECT_CALL(mock, SetCupSize(cupSize));
+	EXPECT_CALL(mock, AddWater(cupSize / 2, static_cast<int>(Temperature::Default)));
+	EXPECT_CALL(mock, AddCoffee(cupSize / 3));
+
+	coffemaker.MakeAmericano(mock, static_cast<CupSize>(cupSize));
+}
+
+TEST(Cappucino, MakeLittleCupOfCappucino)
+{
+	Coffemaker coffemaker;
+	MockSourceOfIngredients mock;
+	testing::InSequence seq;
+	auto cupSize = static_cast<int>(CupSize::Little);
 
 	EXPECT_CALL(mock, SetCupSize(cupSize));
 	EXPECT_CALL(mock, AddMilk(cupSize / 3));
 	EXPECT_CALL(mock, AddCoffee(cupSize / 3));
 	EXPECT_CALL(mock, AddMilkFoam(cupSize / 3));
 
-	mock.MakeCappucino(static_cast<CupSize>(cupSize));
+	coffemaker.MakeCappucino(mock, static_cast<CupSize>(cupSize));
 }
 
-TEST(Latte, MakeLatte)
+TEST(Cappucino, MakeBigCupOfCappucino)
 {
-	MockCoffemaker mock;
+	Coffemaker coffemaker;
+	MockSourceOfIngredients mock;
 	testing::InSequence seq;
-	auto cupSize = static_cast<grams>(CupSize::Little);
+	auto cupSize = static_cast<int>(CupSize::Big);
+
+	EXPECT_CALL(mock, SetCupSize(cupSize));
+	EXPECT_CALL(mock, AddMilk(cupSize / 3));
+	EXPECT_CALL(mock, AddCoffee(cupSize / 3));
+	EXPECT_CALL(mock, AddMilkFoam(cupSize / 3));
+
+	coffemaker.MakeCappucino(mock, static_cast<CupSize>(cupSize));
+}
+
+TEST(Latte, MakeLittleCupOfLatte)
+{
+	Coffemaker coffemaker;
+	MockSourceOfIngredients mock;
+	testing::InSequence seq;
+	auto cupSize = static_cast<int>(CupSize::Little);
 
 	EXPECT_CALL(mock, SetCupSize(cupSize));
 	EXPECT_CALL(mock, AddMilk(cupSize / 4));
 	EXPECT_CALL(mock, AddCoffee(cupSize / 2));
 	EXPECT_CALL(mock, AddMilkFoam(cupSize / 4));
 
-	mock.MakeLatte(static_cast<CupSize>(cupSize));
+	coffemaker.MakeLatte(mock, static_cast<CupSize>(cupSize));
 }
 
-TEST(Marochino, MakeMarochino)
+TEST(Latte, MakeBigCupOfLatte)
 {
-	MockCoffemaker mock;
+	Coffemaker coffemaker;
+	MockSourceOfIngredients mock;
 	testing::InSequence seq;
-	auto cupSize = static_cast<grams>(CupSize::Little);
+	auto cupSize = static_cast<int>(CupSize::Big);
+
+	EXPECT_CALL(mock, SetCupSize(cupSize));
+	EXPECT_CALL(mock, AddMilk(cupSize / 4));
+	EXPECT_CALL(mock, AddCoffee(cupSize / 2));
+	EXPECT_CALL(mock, AddMilkFoam(cupSize / 4));
+
+	coffemaker.MakeLatte(mock, static_cast<CupSize>(cupSize));
+}
+
+TEST(Marochino, MakeLittleCupOfMarochino)
+{
+	Coffemaker coffemaker;
+	MockSourceOfIngredients mock;
+	testing::InSequence seq;
+	auto cupSize = static_cast<int>(CupSize::Little);
 
 	EXPECT_CALL(mock, SetCupSize(cupSize));
 	EXPECT_CALL(mock, AddChocolate(cupSize / 4));
 	EXPECT_CALL(mock, AddCoffee(cupSize / 4));
 	EXPECT_CALL(mock, AddMilkFoam(cupSize / 4));
 
-	mock.MakeMarochino(static_cast<CupSize>(cupSize));
+	coffemaker.MakeMarochino(mock, static_cast<CupSize>(cupSize));
+}
+
+TEST(Marochino, MakeBigCupOfMarochino)
+{
+	Coffemaker coffemaker;
+	MockSourceOfIngredients mock;
+	testing::InSequence seq;
+	auto cupSize = static_cast<int>(CupSize::Big);
+
+	EXPECT_CALL(mock, SetCupSize(cupSize));
+	EXPECT_CALL(mock, AddChocolate(cupSize / 4));
+	EXPECT_CALL(mock, AddCoffee(cupSize / 4));
+	EXPECT_CALL(mock, AddMilkFoam(cupSize / 4));
+
+	coffemaker.MakeMarochino(mock, static_cast<CupSize>(cupSize));
 }
