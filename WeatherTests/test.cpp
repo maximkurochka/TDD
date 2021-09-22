@@ -4,240 +4,159 @@
 
 typedef std::vector<std::string> VectorOfStrings;
 
-VectorOfStrings dates{
-	"19.09.2021;03:00",
-	"19.09.2021;09:00",
-	"19.09.2021;15:00",
-	"19.09.2021;21:00"
-};
-
-VectorOfStrings firstSetOfReturnsValue{
-	" 1;  2;  0",
-	" 1;  4;  6",
-	" 2;  0;  3",
-	" 0; -2;  9"
-};
-
-VectorOfStrings secondSetOfReturnsValue{
-	" 5;  -1;   8",
-	" 3;   0;   9",
-	" 2;  -3;  10",
-	"-2;  123; 15"
-};
-
-VectorOfStrings thirdSetOfReturnsValue{
-	" 28;  180;   5",
-	" 10;   0;    6",
-	" 20;   0;   10",
-	"  2; -180;  -9"
-};
-
-TEST(GetAverageTemperature, CheckResultWithFirstSetOfValues)
+class FixturesTest : public ::testing::Test
 {
+protected:
 	MockWeatherServer mock;
 	WeatherClient client;
+};
 
-	EXPECT_CALL(mock, GetWeather(testing::_)).Times(4);
-	for (std::size_t i = 0; i < dates.size(); i++)
-	{
-		ON_CALL(mock, GetWeather(dates[i])).WillByDefault(testing::Return(firstSetOfReturnsValue[i]));
-	}
+TEST_F(FixturesTest, GetAverageTemperaturetWithFirstSetOfValues)
+{
+	EXPECT_CALL(mock, GetWeather("19.09.2021;03:00")).WillOnce(::testing::Return(" 1;  2;  0"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;09:00")).WillOnce(::testing::Return(" 1;  4;  6"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;15:00")).WillOnce(::testing::Return(" 2;  0;  3"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;21:00")).WillOnce(::testing::Return(" 0; -2;  9"));
 
 	EXPECT_EQ(static_cast<double>(1), client.GetAverageTemperature(mock, "19.09.2021"));
 }
 
-TEST(GetAverageTemperature, CheckResultWithSeconfSetOfValues)
+TEST_F(FixturesTest, GetAverageTemperatureWithSecondSetOfValues)
 {
-	MockWeatherServer mock;
-	WeatherClient client;
-
-	EXPECT_CALL(mock, GetWeather(testing::_)).Times(4);
-	for (std::size_t i = 0; i < dates.size(); i++)
-	{
-		ON_CALL(mock, GetWeather(dates[i])).WillByDefault(testing::Return(secondSetOfReturnsValue[i]));
-	}
+	EXPECT_CALL(mock, GetWeather("19.09.2021;03:00")).WillOnce(::testing::Return(" 5;  -1;   8"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;09:00")).WillOnce(::testing::Return(" 3;   0;   9"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;15:00")).WillOnce(::testing::Return(" 2;  -3;  10"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;21:00")).WillOnce(::testing::Return("-2;  123; 15"));
 
 	EXPECT_EQ(static_cast<double>(2), client.GetAverageTemperature(mock, "19.09.2021"));
 }
 
-TEST(GetAverageTemperature, CheckResultWithThirdSetOfValues)
+TEST_F(FixturesTest, GetAverageTemperaturetWithThirdSetOfValues)
 {
-	MockWeatherServer mock;
-	WeatherClient client;
-
-	EXPECT_CALL(mock, GetWeather(testing::_)).Times(4);
-	for (std::size_t i = 0; i < dates.size(); i++)
-	{
-		ON_CALL(mock, GetWeather(dates[i])).WillByDefault(testing::Return(thirdSetOfReturnsValue[i]));
-	}
+	EXPECT_CALL(mock, GetWeather("19.09.2021;03:00")).WillOnce(::testing::Return(" 28;  180;   5"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;09:00")).WillOnce(::testing::Return(" 10;   0;    6"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;15:00")).WillOnce(::testing::Return(" 20;   0;   10"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;21:00")).WillOnce(::testing::Return("  2; -180;  -9"));
 
 	EXPECT_EQ(static_cast<double>(15), client.GetAverageTemperature(mock, "19.09.2021"));
 }
 
-TEST(GetMinimumTemperature, CheckResultWithFirstSetOfValues)
+TEST_F(FixturesTest, GetMinimumTemperatureWithFirstSetOfValues)
 {
-	MockWeatherServer mock;
-	WeatherClient client;
-
-	EXPECT_CALL(mock, GetWeather(testing::_)).Times(4);
-	for (std::size_t i = 0; i < dates.size(); i++)
-	{
-		ON_CALL(mock, GetWeather(dates[i])).WillByDefault(testing::Return(firstSetOfReturnsValue[i]));
-	}
+	EXPECT_CALL(mock, GetWeather("19.09.2021;03:00")).WillOnce(::testing::Return(" 1;  2;  0"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;09:00")).WillOnce(::testing::Return(" 1;  4;  6"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;15:00")).WillOnce(::testing::Return(" 2;  0;  3"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;21:00")).WillOnce(::testing::Return(" 0; -2;  9"));
 
 	EXPECT_EQ(static_cast<double>(0), client.GetMinimumTemperature(mock, "19.09.2021"));
 }
 
-TEST(GetMinimumTemperature, CheckResultWithSeconfSetOfValues)
+TEST_F(FixturesTest, GetMinimumTemperatureSecondSetOfValues)
 {
-	MockWeatherServer mock;
-	WeatherClient client;
-
-	EXPECT_CALL(mock, GetWeather(testing::_)).Times(4);
-	for (std::size_t i = 0; i < dates.size(); i++)
-	{
-		ON_CALL(mock, GetWeather(dates[i])).WillByDefault(testing::Return(secondSetOfReturnsValue[i]));
-	}
+	EXPECT_CALL(mock, GetWeather("19.09.2021;03:00")).WillOnce(::testing::Return(" 5;  -1;   8"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;09:00")).WillOnce(::testing::Return(" 3;   0;   9"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;15:00")).WillOnce(::testing::Return(" 2;  -3;  10"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;21:00")).WillOnce(::testing::Return("-2;  123; 15"));
 
 	EXPECT_EQ(static_cast<double>(-2), client.GetMinimumTemperature(mock, "19.09.2021"));
 }
 
-TEST(GetMinimumTemperature, CheckResultWithThirdSetOfValues)
+TEST_F(FixturesTest, GetMinimumTemperatureWithThirdSetOfValues)
 {
-	MockWeatherServer mock;
-	WeatherClient client;
-
-	EXPECT_CALL(mock, GetWeather(testing::_)).Times(4);
-	for (std::size_t i = 0; i < dates.size(); i++)
-	{
-		ON_CALL(mock, GetWeather(dates[i])).WillByDefault(testing::Return(thirdSetOfReturnsValue[i]));
-	}
+	EXPECT_CALL(mock, GetWeather("19.09.2021;03:00")).WillOnce(::testing::Return(" 28;  180;   5"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;09:00")).WillOnce(::testing::Return(" 10;   0;    6"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;15:00")).WillOnce(::testing::Return(" 20;   0;   10"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;21:00")).WillOnce(::testing::Return("  2; -180;  -9"));
 
 	EXPECT_EQ(static_cast<double>(2), client.GetMinimumTemperature(mock, "19.09.2021"));
 }
 
-TEST(GetMaximumTemperature, CheckResultWithFirstSetOfValues)
+TEST_F(FixturesTest, GetMaximumTemperatureWithFirstSetOfValues)
 {
-	MockWeatherServer mock;
-	WeatherClient client;
-
-	EXPECT_CALL(mock, GetWeather(testing::_)).Times(4);
-	for (std::size_t i = 0; i < dates.size(); i++)
-	{
-		ON_CALL(mock, GetWeather(dates[i])).WillByDefault(testing::Return(firstSetOfReturnsValue[i]));
-	}
+	EXPECT_CALL(mock, GetWeather("19.09.2021;03:00")).WillOnce(::testing::Return(" 1;  2;  0"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;09:00")).WillOnce(::testing::Return(" 1;  4;  6"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;15:00")).WillOnce(::testing::Return(" 2;  0;  3"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;21:00")).WillOnce(::testing::Return(" 0; -2;  9"));
 
 	EXPECT_EQ(static_cast<double>(2), client.GetMaximumTemperature(mock, "19.09.2021"));
 }
 
-TEST(GetMaximumTemperature, CheckResultWithSeconfSetOfValues)
+TEST_F(FixturesTest, GetMaximumTemperatureWithSecondSetOfValues)
 {
-	MockWeatherServer mock;
-	WeatherClient client;
-
-	EXPECT_CALL(mock, GetWeather(testing::_)).Times(4);
-	for (std::size_t i = 0; i < dates.size(); i++)
-	{
-		ON_CALL(mock, GetWeather(dates[i])).WillByDefault(testing::Return(secondSetOfReturnsValue[i]));
-	}
+	EXPECT_CALL(mock, GetWeather("19.09.2021;03:00")).WillOnce(::testing::Return(" 5;  -1;   8"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;09:00")).WillOnce(::testing::Return(" 3;   0;   9"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;15:00")).WillOnce(::testing::Return(" 2;  -3;  10"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;21:00")).WillOnce(::testing::Return("-2;  123; 15"));
 
 	EXPECT_EQ(static_cast<double>(5), client.GetMaximumTemperature(mock, "19.09.2021"));
 }
 
-TEST(GetMaximumTemperature, CheckResultWithThirdSetOfValues)
+TEST_F(FixturesTest, GetMaximumTemperatureWithThirdSetOfValues)
 {
-	MockWeatherServer mock;
-	WeatherClient client;
-
-	EXPECT_CALL(mock, GetWeather(testing::_)).Times(4);
-	for (std::size_t i = 0; i < dates.size(); i++)
-	{
-		ON_CALL(mock, GetWeather(dates[i])).WillByDefault(testing::Return(thirdSetOfReturnsValue[i]));
-	}
+	EXPECT_CALL(mock, GetWeather("19.09.2021;03:00")).WillOnce(::testing::Return(" 28;  180;   5"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;09:00")).WillOnce(::testing::Return(" 10;   0;    6"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;15:00")).WillOnce(::testing::Return(" 20;   0;   10"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;21:00")).WillOnce(::testing::Return("  2; -180;  -9"));
 
 	EXPECT_EQ(static_cast<double>(28), client.GetMaximumTemperature(mock, "19.09.2021"));
 }
 
-TEST(GetAverageWindDirection, CheckResultWithFirstSetOfValues)
+TEST_F(FixturesTest, GetAverageWindDirectionWithFirstSetOfValues)
 {
-	MockWeatherServer mock;
-	WeatherClient client;
-
-	EXPECT_CALL(mock, GetWeather(testing::_)).Times(4);
-	for (std::size_t i = 0; i < dates.size(); i++)
-	{
-		ON_CALL(mock, GetWeather(dates[i])).WillByDefault(testing::Return(firstSetOfReturnsValue[i]));
-	}
+	EXPECT_CALL(mock, GetWeather("19.09.2021;03:00")).WillOnce(::testing::Return(" 1;  2;  0"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;09:00")).WillOnce(::testing::Return(" 1;  4;  6"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;15:00")).WillOnce(::testing::Return(" 2;  0;  3"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;21:00")).WillOnce(::testing::Return(" 0; -2;  9"));
 
 	EXPECT_EQ(static_cast<double>(1), client.GetAverageWindDirection(mock, "19.09.2021"));
 }
 
-TEST(GetAverageWindDirection, CheckResultWithSeconfSetOfValues)
+TEST_F(FixturesTest, GetAverageWindDirectionWithSecondSetOfValues)
 {
-	MockWeatherServer mock;
-	WeatherClient client;
-
-	EXPECT_CALL(mock, GetWeather(testing::_)).Times(4);
-	for (std::size_t i = 0; i < dates.size(); i++)
-	{
-		ON_CALL(mock, GetWeather(dates[i])).WillByDefault(testing::Return(secondSetOfReturnsValue[i]));
-	}
+	EXPECT_CALL(mock, GetWeather("19.09.2021;03:00")).WillOnce(::testing::Return(" 5;  -1;   8"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;09:00")).WillOnce(::testing::Return(" 3;   0;   9"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;15:00")).WillOnce(::testing::Return(" 2;  -3;  10"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;21:00")).WillOnce(::testing::Return("-2;  123; 15"));
 
 	EXPECT_EQ(static_cast<double>(29.75), client.GetAverageWindDirection(mock, "19.09.2021"));
 }
 
-TEST(GetAverageWindDirection, CheckResultWithThirdSetOfValues)
+TEST_F(FixturesTest, GetAverageWindDirectionWithThirdSetOfValues)
 {
-	MockWeatherServer mock;
-	WeatherClient client;
-
-	EXPECT_CALL(mock, GetWeather(testing::_)).Times(4);
-	for (std::size_t i = 0; i < dates.size(); i++)
-	{
-		ON_CALL(mock, GetWeather(dates[i])).WillByDefault(testing::Return(thirdSetOfReturnsValue[i]));
-	}
+	EXPECT_CALL(mock, GetWeather("19.09.2021;03:00")).WillOnce(::testing::Return(" 28;  180;   5"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;09:00")).WillOnce(::testing::Return(" 10;   0;    6"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;15:00")).WillOnce(::testing::Return(" 20;   0;   10"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;21:00")).WillOnce(::testing::Return("  2; -180;  -9"));
 
 	EXPECT_EQ(static_cast<double>(0), client.GetAverageWindDirection(mock, "19.09.2021"));
 }
 
-TEST(GetMaximumWindSpeed, CheckResultWithFirstSetOfValues)
+TEST_F(FixturesTest, GetMaximumWindSpeedWithFirstSetOfValues)
 {
-	MockWeatherServer mock;
-	WeatherClient client;
-
-	EXPECT_CALL(mock, GetWeather(testing::_)).Times(4);
-	for (std::size_t i = 0; i < dates.size(); i++)
-	{
-		ON_CALL(mock, GetWeather(dates[i])).WillByDefault(testing::Return(firstSetOfReturnsValue[i]));
-	}
+	EXPECT_CALL(mock, GetWeather("19.09.2021;03:00")).WillOnce(::testing::Return(" 1;  2;  0"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;09:00")).WillOnce(::testing::Return(" 1;  4;  6"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;15:00")).WillOnce(::testing::Return(" 2;  0;  3"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;21:00")).WillOnce(::testing::Return(" 0; -2;  9"));
 
 	EXPECT_EQ(static_cast<double>(9), client.GetMaximumWindSpeed(mock, "19.09.2021"));
 }
 
-TEST(GetMaximumWindSpeed, CheckResultWithSeconfSetOfValues)
+TEST_F(FixturesTest, GetMaximumWindSpeedWithSecondSetOfValues)
 {
-	MockWeatherServer mock;
-	WeatherClient client;
-
-	EXPECT_CALL(mock, GetWeather(testing::_)).Times(4);
-	for (std::size_t i = 0; i < dates.size(); i++)
-	{
-		ON_CALL(mock, GetWeather(dates[i])).WillByDefault(testing::Return(secondSetOfReturnsValue[i]));
-	}
+	EXPECT_CALL(mock, GetWeather("19.09.2021;03:00")).WillOnce(::testing::Return(" 5;  -1;   8"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;09:00")).WillOnce(::testing::Return(" 3;   0;   9"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;15:00")).WillOnce(::testing::Return(" 2;  -3;  10"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;21:00")).WillOnce(::testing::Return("-2;  123; 15"));
 
 	EXPECT_EQ(static_cast<double>(15), client.GetMaximumWindSpeed(mock, "19.09.2021"));
 }
 
-TEST(GetMaximumWindSpeed, CheckResultWithThirdSetOfValues)
+TEST_F(FixturesTest, GetMaximumWindSpeedWithThirdSetOfValues)
 {
-	MockWeatherServer mock;
-	WeatherClient client;
-
-	EXPECT_CALL(mock, GetWeather(testing::_)).Times(4);
-	for (std::size_t i = 0; i < dates.size(); i++)
-	{
-		ON_CALL(mock, GetWeather(dates[i])).WillByDefault(testing::Return(thirdSetOfReturnsValue[i]));
-	}
+	EXPECT_CALL(mock, GetWeather("19.09.2021;03:00")).WillOnce(::testing::Return(" 28;  180;   5"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;09:00")).WillOnce(::testing::Return(" 10;   0;    6"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;15:00")).WillOnce(::testing::Return(" 20;   0;   10"));
+	EXPECT_CALL(mock, GetWeather("19.09.2021;21:00")).WillOnce(::testing::Return("  2; -180;  -9"));
 
 	EXPECT_EQ(static_cast<double>(10), client.GetMaximumWindSpeed(mock, "19.09.2021"));
 }
